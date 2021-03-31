@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Store</title>
+</head>
+<body>
+    <h1>Store</h1>
+    <div class="grid-container">
+        <div class="box-container">
+            <h2>Daftar Produk</h2>
+            {% if products %}
+                {% for produk in products %}
+                    <div class="box-content">
+                        <h3 style="line-height: 0px;">{{produk}}</h3>
+                        <p><span>{{produk.keterangan}}</span><br>
+                        Harga: {{produk.harga}}, Jumlah: {{produk.jumlah}}</p>
+                        <div style="display: flex;">
+                            <form action="ubah/" method="post">
+                                {% csrf_token %}
+                                <input type="number" name="id" value="{{produk.id}}" hidden>
+                                <button type="submit">Ubah</button>
+                            </form>
+                            <form action="hapus/" method="post">
+                                {% csrf_token %}
+                                <input type="number" name="id" value="{{produk.id}}" hidden>
+                                <button type="submit">Hapus</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Tidak ada Produk</p>
+            {% endif %}
+        </div>
+        <div class="box-container">
+            <h2>Tambah Produk Baru</h2>
+            <form action="tambah/" method="post">
+                {% csrf_token %}
+                <label for="nama">Nama Produk</label>
+                <input type="text" name="nama">
+                <label for="keterangan">Keterangan</label>
+                <input type="text" name="keterangan">
+                <label for="harga">Harga</label>
+                <input type="number" name="harga">
+                <label for="jumlah">Jumlah</label>
+                <input type="number" name="jumlah">
+                <button type="submit" class="big-btn">Tambah</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
